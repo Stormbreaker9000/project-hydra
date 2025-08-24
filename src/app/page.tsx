@@ -4,6 +4,7 @@ import HydraLogoWords from "../../public/orange-hydra-words-trans.png";
 import Image from "next/image";
 import Hero from "@/components/Hero";
 import LogoCollection from "@/components/LogoCollection";
+import Features from "@/components/Features";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Hero />
       <div>
         <LogoCollection />
+        <Features />
       </div>
       <Container maxWidth="lg">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, alignItems: "center", justifyContent: "center", height: "100vh", width: "100%" }}>
