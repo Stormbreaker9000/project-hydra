@@ -7,6 +7,7 @@ import LogoCollection from "@/components/LogoCollection";
 import Features from "@/components/Features";
 import Highlights from "@/components/Highlights";
 import Pricing from "@/components/Pricing";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -20,6 +21,8 @@ export default function Home() {
         <Highlights />
         <Divider />
         <Pricing />
+        <Divider />
+        <Footer />
       </div>
       <Container maxWidth="lg">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, alignItems: "center", justifyContent: "center", height: "100vh", width: "100%" }}>
