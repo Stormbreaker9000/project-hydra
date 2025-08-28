@@ -5,6 +5,7 @@ import Image from "next/image";
 import Hero from "@/components/Hero";
 import LogoCollection from "@/components/LogoCollection";
 import Features from "@/components/Features";
+import Highlights from "@/components/Highlights";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <div>
         <LogoCollection />
         <Features />
+        <Highlights />
       </div>
       <Container maxWidth="lg">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, alignItems: "center", justifyContent: "center", height: "100vh", width: "100%" }}>
