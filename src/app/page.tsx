@@ -1,11 +1,12 @@
 import HydraAppBar from "@/components/HydraAppBar";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Divider, Typography } from "@mui/material";
 import HydraLogoWords from "../../public/orange-hydra-words-trans.png";
 import Image from "next/image";
 import Hero from "@/components/Hero";
 import LogoCollection from "@/components/LogoCollection";
 import Features from "@/components/Features";
 import Highlights from "@/components/Highlights";
+import Pricing from "@/components/Pricing";
 
 export default function Home() {
   return (
@@ -15,7 +16,10 @@ export default function Home() {
       <div>
         <LogoCollection />
         <Features />
+        <Divider />
         <Highlights />
+        <Divider />
+        <Pricing />
       </div>
       <Container maxWidth="lg">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, alignItems: "center", justifyContent: "center", height: "100vh", width: "100%" }}>
