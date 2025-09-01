@@ -1,7 +1,9 @@
 import { theme } from "@/theme";
-import { CssBaseline, InitColorSchemeScript, ThemeProvider } from "@mui/material";
+import { CssBaseline, Divider, InitColorSchemeScript, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import type { Metadata } from "next";
+import HydraAppBar from "@/components/HydraAppBar";
+import Footer from "@/components/Footer";
 
 
 export const metadata: Metadata = {
@@ -21,7 +23,10 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <HydraAppBar />
             {children}
+            <Divider />
+            <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
