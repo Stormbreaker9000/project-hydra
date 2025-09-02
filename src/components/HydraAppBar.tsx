@@ -68,7 +68,7 @@ export default function HydraAppBar() {
                     onClose={handleClose}
                   >
                     {MenuItems.map((item) => (
-                      <MenuItem key={item.title} component={Link} href={`/${item.title}`}>
+                      <MenuItem key={item.title} component={Link} href={'/metal'}>
                         {item.title}
                       </MenuItem>
                     ))}
