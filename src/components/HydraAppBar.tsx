@@ -77,6 +77,7 @@ export default function HydraAppBar() {
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <Button variant="text" color="secondary" size="small" component={Link} href="/signin">Sign In</Button>
+              <Button variant="text" color="secondary" size="small" component={Link} href="/signin-side">Sign In 2</Button>
               <Button variant="contained" color="primary" size="small" component={Link} href="/signup">Sign Up</Button>
           </Box>
         </StyledToolbar>
