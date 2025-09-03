@@ -33,7 +33,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
         padding: theme.spacing(4),
     },
-    '&:before': {
+    '&::before': {
         content: '""',
         display: 'block',
         position: 'absolute',
