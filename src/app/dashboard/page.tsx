@@ -13,19 +13,19 @@ import Header from './_components/Header';
 import MainGrid from './_components/MainGrid';
 import SideMenu from './_components/SideMenu';
 
-// import {
-//   chartsCustomizations,
-//   dataGridCustomizations,
-//   datePickersCustomizations,
-//   treeViewCustomizations,
-// } from './theme/customizations';
+import {
+  chartsCustomizations,
+  dataGridCustomizations,
+  datePickersCustomizations,
+  treeViewCustomizations,
+} from './_theme/customizations';
 
-// const xThemeComponents = {
-//   ...chartsCustomizations,
-//   ...dataGridCustomizations,
-//   ...datePickersCustomizations,
-//   ...treeViewCustomizations,
-// };
+const xThemeComponents = {
+  ...chartsCustomizations,
+  ...dataGridCustomizations,
+  ...datePickersCustomizations,
+  ...treeViewCustomizations,
+};
 
 export default function Dashboard(props: { disableCustomTheme?: boolean }) {
   return (
