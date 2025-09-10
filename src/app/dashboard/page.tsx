@@ -9,8 +9,8 @@ import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppNavbar from './_components/AppNavBar';
-// import Header from './components/Header';
-// import MainGrid from './components/MainGrid';
+import Header from './_components/Header';
+import MainGrid from './_components/MainGrid';
 import SideMenu from './_components/SideMenu';
 
 // import {
@@ -34,7 +34,7 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
         <SideMenu />
         <AppNavbar />
         {/* Main content */}
-        {/* <Box
+        <Box
           component="main"
           sx={(theme) => ({
             flexGrow: 1,
@@ -50,13 +50,13 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
               alignItems: 'center',
               mx: 3,
               pb: 5,
-              mt: { xs: 8, md: 0 },
+              mt: { xs: 8, md: 10 },
             }}
           >
             <Header />
             <MainGrid />
           </Stack>
-        </Box> */}
+        </Box>
       </Box>
 
   );

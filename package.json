@@ -20,6 +20,8 @@
     "@mui/x-data-grid": "^8.11.0",
     "@mui/x-date-pickers": "^8.11.0",
     "@mui/x-tree-view": "^8.11.0",
+    "@react-spring/web": "^10.0.2",
+    "dayjs": "^1.11.18",
     "next": "15.5.2",
     "react": "19.1.1",
     "react-dom": "19.1.1"
