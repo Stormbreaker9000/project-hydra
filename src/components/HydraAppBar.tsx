@@ -54,6 +54,7 @@ export default function HydraAppBar() {
                   <Button variant="text" color="secondary" size="small" component={Link} href="/dashboard">Dashboard</Button>
                   <Button variant="text" color="secondary" size="small" component={Link} href="/checkout">Checkout</Button>
                   <Button variant="text" color="secondary" size="small" component={Link} href="/blog">Blog</Button>
+                  <Button variant="text" color="secondary" size="small" component={Link} href="/crud">CRUD</Button>
                   <Button
                     variant="text"
                     color="secondary"
