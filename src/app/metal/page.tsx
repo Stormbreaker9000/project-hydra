@@ -2,11 +2,11 @@ import { Box, Container, Typography } from "@mui/material";
 
 import { neon } from '@neondatabase/serverless';
 
-async function getData() {
-  const sql = neon(process.env.DATABASE_URL!);
+async function getData(): Promise<Band[]> {
+  const sql = neon(process.env.DATABASE_URL || '');
   const response = await sql`SELECT * FROM bands LIMIT 10`;
   // console.log('response', response);
-  return response;
+  return response as Band[];
 }
 
 interface Band {
