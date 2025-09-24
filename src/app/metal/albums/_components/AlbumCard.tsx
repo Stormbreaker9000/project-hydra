@@ -51,9 +51,12 @@ const albumTypes = [
 
 export default function AlbumCard({ album }: { album: Album }) {
     const albumType = albumTypes.find((type) => type.album_type === album.type);
+
+    const longName = album.album_name.length > 25
+
     return (
         <Card variant="outlined" sx={{ height: '100%' }}>
-            <CardHeader title={album.album_name} />
+            <CardHeader title={album.album_name} slotProps={{ title: { sx: { fontSize: longName ? '1rem' : '1.5rem' } } }} />
             <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
                 <Chip label={albumType?.album_type} color={albumType?.color as ChipProps['color']} />
