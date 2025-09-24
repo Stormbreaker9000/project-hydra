@@ -23,66 +23,71 @@ const StyledToolbar = styled(Toolbar)(({theme}) => ({
 const MenuItems = [
   {
     title: "Bands",
+    href: "/metal/bands",
   },
   {
     title: "Labels",
+    href: "/metal/labels",
   },
   {
     title: "Albums",
+    href: "/metal/albums",
   },
 ]
 
 export default function HydraAppBar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   return (
-    <AppBar position="fixed" enableColorOnDark sx={{ boxShadow: 0, bgcolor: "transparent", backgroundImage: "none", mt: 'calc(var(--template-frame-height, 0px) + 28px)' }}>
-      <Container maxWidth="lg">
-        <StyledToolbar variant="dense" disableGutters>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Image src={HydraLogo} alt="Hydra Logo" width={32} height={32} />
-              <Typography variant="h6" color="text.primary" sx={{ fontWeight: 600 }}>Project Hydra</Typography>
-              <Box sx={{ flexGrow: 1 }} >
-                  <Button variant="text" color="secondary" size="small" component={Link} href="/marketing">Marketing</Button>
-                  <Button variant="text" color="secondary" size="small" component={Link} href="/dashboard">Dashboard</Button>
-                  <Button variant="text" color="secondary" size="small" component={Link} href="/checkout">Checkout</Button>
-                  <Button variant="text" color="secondary" size="small" component={Link} href="/blog">Blog</Button>
-                  <Button variant="text" color="secondary" size="small" component={Link} href="/crud">CRUD</Button>
-                  <Button
-                    variant="text"
-                    color="secondary"
-                    size="small"
-                    onClick={handleClick}
-                  >
-                    Metal
-                  </Button>
-                  <Menu 
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                  >
-                    {MenuItems.map((item) => (
-                      <MenuItem key={item.title} component={Link} href={'/metal'}>
-                        {item.title}
-                      </MenuItem>
-                    ))}
-                  </Menu>
+      <AppBar position="fixed" enableColorOnDark sx={{ boxShadow: 0, bgcolor: "transparent", backgroundImage: "none", mt: 'calc(var(--template-frame-height, 0px) + 28px)' }}>
+        <Container maxWidth="lg">
+          <StyledToolbar variant="dense" disableGutters>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Image src={HydraLogo} alt="Hydra Logo" width={32} height={32} />
+                <Typography variant="h6" color="text.primary" sx={{ fontWeight: 600 }}>Project Hydra</Typography>
+                <Box sx={{ flexGrow: 1 }} >
+                    <Button variant="text" color="secondary" size="small" component={Link} href="/marketing">Marketing</Button>
+                    <Button variant="text" color="secondary" size="small" component={Link} href="/dashboard">Dashboard</Button>
+                    <Button variant="text" color="secondary" size="small" component={Link} href="/checkout">Checkout</Button>
+                    <Button variant="text" color="secondary" size="small" component={Link} href="/blog">Blog</Button>
+                    <Button variant="text" color="secondary" size="small" component={Link} href="/crud">CRUD</Button>
+                    <Button
+                      variant="text"
+                      color="secondary"
+                      size="small"
+                      onClick={handleClick}
+                    >
+                      Metal
+                    </Button>
+                    <Menu 
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      {MenuItems.map((item) => (
+                        <MenuItem key={item.title} component={Link} href={item.href} onClick={handleClose}>
+                          {item.title}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                </Box>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Button variant="text" color="secondary" size="small" component={Link} href="/signin">Sign In</Button>
+                <Button variant="text" color="secondary" size="small" component={Link} href="/signin-side">Sign In 2</Button>
+                <Button variant="contained" color="primary" size="small" component={Link} href="/signup">Sign Up</Button>
               </Box>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Button variant="text" color="secondary" size="small" component={Link} href="/signin">Sign In</Button>
-              <Button variant="text" color="secondary" size="small" component={Link} href="/signin-side">Sign In 2</Button>
-              <Button variant="contained" color="primary" size="small" component={Link} href="/signup">Sign Up</Button>
-          </Box>
-        </StyledToolbar>
-      </Container>
-    </AppBar>
+            </StyledToolbar>
+          </Container>
+      </AppBar>
   );
 }
