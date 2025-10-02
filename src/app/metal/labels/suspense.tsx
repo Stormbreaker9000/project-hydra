@@ -1,5 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 
+
 export default function Suspense() {
     return (
         <Box>
@@ -9,3 +10,4 @@ export default function Suspense() {
         </Box>
     )
 }
+    

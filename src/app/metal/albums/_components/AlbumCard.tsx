@@ -64,7 +64,7 @@ export default function AlbumCard({ album }: { album: Album }) {
                     <Typography>{album.band_id}</Typography>
                 </Box>
                 <Typography>{album.year}</Typography>
-                <Typography>{album.reviews}</Typography>
+                <Typography>Rating: {album.reviews}</Typography>
             </CardContent>
         </Card>
     )
