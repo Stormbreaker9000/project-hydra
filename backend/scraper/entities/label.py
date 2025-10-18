@@ -7,24 +7,27 @@ def scrape_label(driver: webdriver.Chrome, url: str):
     time.sleep(2)
 
     # want <div> with id="label_content" which contains <dt> and <dd>
-
+    label = {}
+    label["logo_url"] = None
     try:
+
         label_logo = driver.find_element(By.ID, "label_sidebar")
         label_logo_img = label_logo.find_element(By.TAG_NAME, "img")
-        label["logo"] = label_logo_img.get_attribute("src")
-    except:
-        print("Label logo not found")
-        return None
+        label["logo_url"] = label_logo_img.get_attribute("src")
+    except Exception as e:
+        print(f"Label logo not found: {e}")
+        return {}
 
     try:
         label_content = driver.find_element(By.ID, "label_content")
+        label["name"] = label_content.find_element(By.TAG_NAME, "h1").text
         dt_elements = label_content.find_elements(By.TAG_NAME, "dt")
         dd_elements = label_content.find_elements(By.TAG_NAME, "dd")
     except:
         print("Label content not found")
-        return None
+        return {}
 
-    label = {}
+
     for dt, dd in zip(dt_elements, dd_elements):
         label[dt.text] = dd.text
 
@@ -40,7 +43,7 @@ def scrape_label(driver: webdriver.Chrome, url: str):
         url = url_a.get_attribute("href")
     except:
         print("Contact info not found")
-        return None
+        return {}
 
     url = url_a.get_attribute("href")
 
@@ -96,9 +99,20 @@ def scrape_label(driver: webdriver.Chrome, url: str):
     except Exception as e:
         print(f"Error: {e}")
         print("Current bands not found")
-        return None
+        return {}
+
+    # click on the past bands tab
+    try:
+        past_bands_tab = driver.find_element(By.ID, "ui-id-2")
+        past_bands_tab.click()
+        time.sleep(2)
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Past bands tab not found")
+        return {}
 
     # Historical Roster with pagination
+    label["historical_bands"] = []
     try:
         historical_bands_tab = driver.find_element(By.ID, "label_tabs_past")
         historical_bands_table = historical_bands_tab.find_element(By.ID, "bandListPast")
@@ -137,7 +151,7 @@ def scrape_label(driver: webdriver.Chrome, url: str):
     except Exception as e:
         print(f"Error: {e}")
         print("Historical bands not found")
-        return None
+        return {}
 
     # Releases with pagination
     # Links
@@ -160,6 +174,6 @@ def scrape_label(driver: webdriver.Chrome, url: str):
                 label["modified_on"] = parts[1]
     except:
         print("Audit trail not found")
-        return None
+        return {}
 
     return label

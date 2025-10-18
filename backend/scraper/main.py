@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from entities.label import scrape_label
-from database.connect import connect
+from database.insert import insert_label
 from database.config import load_config
 import time
 
@@ -18,7 +18,9 @@ driver = webdriver.Chrome()
 
 try:
     results = scrape_label(driver, "https://www.metal-archives.com/labels/Metal_Blade_Records")
-    print(results)
+    # print(results)
+    insert_label(results)
+    print("Label inserted successfully")
 except Exception as e:
     print(f"Error: {e}")
 
