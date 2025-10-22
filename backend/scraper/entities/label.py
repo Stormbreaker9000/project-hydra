@@ -7,7 +7,12 @@ def scrape_label(driver: webdriver.Chrome, url: str):
     time.sleep(2)
 
     # want <div> with id="label_content" which contains <dt> and <dd>
+    print("Scraping label: " + url)
+
+    print("Scraping base information")
+
     label = {}
+    label["label_id"] = 3 # TODO: remove this once we have a way to get the label id
     label["logo_url"] = None
     try:
 
@@ -29,7 +34,9 @@ def scrape_label(driver: webdriver.Chrome, url: str):
 
 
     for dt, dd in zip(dt_elements, dd_elements):
-        label[dt.text] = dd.text
+        key = dt.text.replace(":", "").strip().replace(" ", "_").lower()
+        label[key] = dd.text
+        print("Key: " + key + " Value: " + dd.text)
 
     # now add the contact information
     # stored in a <p> with id="label_contact" with two <a> tags inside
@@ -51,6 +58,9 @@ def scrape_label(driver: webdriver.Chrome, url: str):
     label["url"] = url
 
     # Current Roster with pagination
+
+    print("Scraping current bands")
+
     try:
         current_bands_tab = driver.find_element(By.ID, "label_tabs_bands")
         # Showing 1 to 100 of 143 entries
@@ -102,6 +112,9 @@ def scrape_label(driver: webdriver.Chrome, url: str):
         return {}
 
     # click on the past bands tab
+
+    print("Scraping past bands")
+
     try:
         past_bands_tab = driver.find_element(By.ID, "ui-id-2")
         past_bands_tab.click()
@@ -154,10 +167,135 @@ def scrape_label(driver: webdriver.Chrome, url: str):
         return {}
 
     # Releases with pagination
+
+    print("Scraping releases")
+
+    try:
+        releases_tab = driver.find_element(By.ID, "ui-id-3")
+        releases_tab.click()
+        time.sleep(2)
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Releases tab not found")
+        return {}
+
+    label["releases"] = []
+    try:
+        releases_tab = driver.find_element(By.ID, "label_tabs_albums")
+        releases_table = releases_tab.find_element(By.ID, "albumList")
+        releases_elements = releases_table.find_elements(By.TAG_NAME, "tr")
+        counter = 0
+        while True:
+            for element in releases_elements[1:]:
+                element_tds = element.find_elements(By.TAG_NAME, "td")
+                if len(element_tds) != 7:
+                    print("Releases table has unexpected number of columns. Columns: " + str(len(element_tds)))
+                    continue
+                
+                release_link = element_tds[0].find_element(By.TAG_NAME, "a").get_attribute("href")
+                release_id = release_link.split("/")[5]
+                release_name = element_tds[1].text
+                release_type = element_tds[2].text
+                release_year = element_tds[3].text
+                catalog = element_tds[4].text
+                format = element_tds[5].text
+                description = element_tds[6].text
+                label["releases"].append({
+                    "release_id": release_id,
+                    "release_url": release_link,
+                    "release_name": release_name,
+                    "release_type": release_type,
+                    "release_year": release_year,
+                    "catalog": catalog,
+                    "format": format,
+                    "description": description
+                })
+                counter += 1
+            next_page = releases_tab.find_element(By.CLASS_NAME, "next")
+            if next_page.is_displayed() and "paginate_button_disabled" not in next_page.get_attribute("class"):
+                next_page.click()
+                time.sleep(2)
+                releases_elements = releases_table.find_elements(By.TAG_NAME, "tr")
+                print("Releases table has " + str(len(releases_elements)) + " rows")
+            else:
+                break
+
+            if counter > 1:
+                break
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Releases not found")
+        return {}
+    
     # Links
+
+    print("Scraping links")
+
+    try:
+        links_tab = driver.find_element(By.ID, "ui-id-4")
+        links_tab.click()
+        time.sleep(2)
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Links tab not found")
+        return {}
+
+    label["links"] = []
+    try:
+        links_tab = driver.find_element(By.ID, "ui-tabs-1")
+        links_table = links_tab.find_element(By.ID, "linksTablemain")
+        links_elements = links_table.find_elements(By.TAG_NAME, "tr")
+        
+        for element in links_elements:
+            if element.get_attribute("id") in ["header_Official", "header_Official_merchandise"]:
+                continue
+            element_td = element.find_element(By.TAG_NAME, "td")
+            print("Element TD: " + element_td.text)
+
+            link_name = element_td.text
+            print("Link name: " + link_name)
+            link_url = element_td.find_element(By.TAG_NAME, "a").get_attribute("href")
+            label["links"].append({
+                "link_name": link_name,
+                "link_url": link_url
+            })
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Links not found")
+        return {}
+    
     # Notes
 
+    print("Scraping notes")
+
+    try:
+        notes_tab = driver.find_element(By.ID, "ui-id-5")
+        notes_tab.click()
+        time.sleep(2)
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Notes tab not found")
+        return {}
+
+    label["notes"] = []
+    try:
+        notes_tab = driver.find_element(By.ID, "label_tabs_notes")
+        note_title = notes_tab.find_element(By.CLASS_NAME, "title_comment")
+        note_text = notes_tab.find_element(By.TAG_NAME, "p")
+        label["notes"] = {
+            "title": note_title.text,
+            "text": note_text.text
+        }
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Notes not found")
+        return {}
+    
+
     # Audit Trail
+
+    print("Scraping audit trail")
+
     try:
         audit_trail = driver.find_element(By.ID, "auditTrail")
         audit_trail_elements = audit_trail.find_elements(By.TAG_NAME, "td")
@@ -175,5 +313,7 @@ def scrape_label(driver: webdriver.Chrome, url: str):
     except:
         print("Audit trail not found")
         return {}
+
+    print("Scraping complete")
 
     return label

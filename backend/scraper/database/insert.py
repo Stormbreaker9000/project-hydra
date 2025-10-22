@@ -1,6 +1,8 @@
 from database.connect import connect
 from database.config import load_config
 import psycopg
+from datetime import datetime
+import re
 
 def insert_label(label):
     config = load_config()
@@ -8,35 +10,167 @@ def insert_label(label):
     # print label keys
     print(label.keys())
 
+    # clean the founding date because it has a goofy format
+    founded_date = label['founding_date']
+    founded_date = re.sub(r'(\d+)(st|nd|rd|th)', r'\1', founded_date)
+    founded_date = datetime.strptime(founded_date, "%B %d, %Y")
+    founded_date = founded_date.strftime("%Y-%m-%d")
+    label['founding_date'] = founded_date
 
-    sql = """
-        INSERT INTO labels_comprehensive (name, specialization, status, country, founded_year, location, parent_company, logo_url, email, website_url, online_shopping, added_by, added_on, modified_by, modified_on, scraped_at, last_updated) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    print(label['current_bands'][0])
+    print(label['historical_bands'][0])
+    print(label['releases'][0])
+    print(label['links'][0])
+    print(label['notes'][0])
+    sql_labels_comprehensive = """
+        INSERT INTO hydra.labels_comprehensive (
+            name,
+            specialization,
+            status,
+            country,
+            founded_date,
+            location,
+            parent_company,
+            logo_url,
+            email,
+            website_url,
+            online_shopping,
+            added_by,
+            added_on,
+            modified_by,
+            modified_on,
+            scraped_at,
+            last_updated,
+            sub_label)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+
+    sql_label_bands = """
+        INSERT INTO hydra.label_bands (
+            label_id,
+            band_id,
+            band_name,
+            band_url,
+            genre,
+            country,
+            relationship_type,
+            num_releases
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """
+
+    sql_label_releases = """
+        INSERT INTO hydra.label_releases (
+            label_id,
+            release_id,
+            release_name,
+            release_url,
+            band_id,
+            release_type,
+            release_year,
+            catalog,
+            format,
+            description
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+
+    sql_label_links = """
+        INSERT INTO hydra.label_links (
+            label_id,
+            link_name,
+            link_url
+        ) VALUES (%s, %s, %s)
+    """
+
+    sql_label_notes = """
+        INSERT INTO hydra.label_notes (
+            label_id,
+            note_title,
+            note_text
+        ) VALUES (%s, %s, %s)
     """
 
     try:
         with psycopg.connect(**config) as conn:
             with conn.cursor() as cur:
-                from datetime import datetime
+
                 current_date = datetime.now()
-                cur.execute(sql, (
+                cur.execute(sql_labels_comprehensive, (
                     label['name'],
-                    label['Styles/specialties:'],
-                    label['Status:'],
-                    label['Country:'],
-                    label['Founding date :'].split(" ")[2],
-                    label['Address:'],
+                    label['styles/specialties'],
+                    label['status'],
+                    label['country'],
+                    label['founding_date'],
+                    label['address'],
                     '',  # parent_company is still left as empty string, update if you have the data
                     label['logo_url'],
                     label['email'],
                     label['url'],
-                    label['Online shopping:'],
+                    label['online_shopping'],
                     label['added_by'],
                     current_date,  # added_on
                     label['modified_by'],
                     current_date,  # modified_on
                     current_date,  # scraped_at
-                    current_date   # last_updated
+                    current_date,   # last_updated
+                    label['sub-labels']
                 ))
+                print("Label inserted successfully")
+                # Get the id of the just-inserted label (label_id)
+                cur.execute("SELECT currval(pg_get_serial_sequence('hydra.labels_comprehensive','label_id'))")
+                label_id_row = cur.fetchone()
+                if label_id_row:
+                    label['label_id'] = label_id_row[0]
+                else:
+                    raise Exception("Could not retrieve label_id after insert.")
+                print("Label id: " + str(label['label_id']))
+                for band in label['current_bands']:
+                    cur.execute(sql_label_bands, (
+                        label['label_id'],
+                        band['band_id'],
+                        band['band_name'],
+                        band['band_url'],
+                        band['genre'],
+                        band['country'],
+                        'current',
+                        None,
+                    ))
+                print("Current bands inserted successfully")
+                for band in label['historical_bands']:
+                    cur.execute(sql_label_bands, (
+                        label['label_id'],
+                        band['band_id'],
+                        band['band_name'],
+                        band['band_url'],
+                        band['genre'],
+                        band['country'],
+                        'historical',
+                        band['num_releases'],
+                    ))
+                print("Historical bands inserted successfully")
+                for release in label['releases']:
+                    cur.execute(sql_label_releases, (
+                        label['label_id'],
+                        release['release_id'],
+                        release['release_name'],
+                        release['release_url'],
+                        release['band_id'],
+                        release['release_type'],
+                    ))
+                print("Releases inserted successfully")
+                for link in label['links']:
+                    cur.execute(sql_label_links, (
+                        label['label_id'],
+                        link['link_name'],
+                        link['link_url'],
+                    ))
+                print("Links inserted successfully")
+                for note in label['notes']:
+                    cur.execute(sql_label_notes, (
+                        label['label_id'],
+                        note['note_title'],
+                        note['note_text'],
+                    ))
+                print("Notes inserted successfully")
                 conn.commit()
     except (psycopg.DatabaseError, Exception) as e:
         print(f"Error inserting label: {e}")
