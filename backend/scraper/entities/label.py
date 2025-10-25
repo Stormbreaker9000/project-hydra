@@ -180,6 +180,7 @@ def scrape_label(driver: webdriver.Chrome, url: str):
         return {}
 
     label["releases"] = []
+    # Column order: Band link, Album link, Album type, Album year, Catalog, Format, Description
     try:
         releases_tab = driver.find_element(By.ID, "label_tabs_albums")
         releases_table = releases_tab.find_element(By.ID, "albumList")
@@ -192,15 +193,24 @@ def scrape_label(driver: webdriver.Chrome, url: str):
                     print("Releases table has unexpected number of columns. Columns: " + str(len(element_tds)))
                     continue
                 
-                release_link = element_tds[0].find_element(By.TAG_NAME, "a").get_attribute("href")
-                release_id = release_link.split("/")[5]
-                release_name = element_tds[1].text
+                band_link = element_tds[0].find_element(By.TAG_NAME, "a").get_attribute("href")
+                band_id = band_link.split("/")[5]
+                release_link = element_tds[1].find_element(By.TAG_NAME, "a").get_attribute("href")
+                release_id = release_link.split("/")[6]
+                release_name = release_link.split("/")[5]
                 release_type = element_tds[2].text
                 release_year = element_tds[3].text
+
+                if release_year == "Unknown":
+                    release_year = 0
+                else:
+                    release_year = int(release_year)
+
                 catalog = element_tds[4].text
                 format = element_tds[5].text
                 description = element_tds[6].text
                 label["releases"].append({
+                    "band_id": band_id,
                     "release_id": release_id,
                     "release_url": release_link,
                     "release_name": release_name,

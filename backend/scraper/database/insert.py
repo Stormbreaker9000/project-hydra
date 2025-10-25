@@ -21,9 +21,10 @@ def insert_label(label):
     print(label['historical_bands'][0])
     print(label['releases'][0])
     print(label['links'][0])
-    print(label['notes'][0])
+    print(label['notes']['title'])
     sql_labels_comprehensive = """
         INSERT INTO hydra.labels_comprehensive (
+            label_id,
             name,
             specialization,
             status,
@@ -42,7 +43,7 @@ def insert_label(label):
             scraped_at,
             last_updated,
             sub_label)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     sql_label_bands = """
@@ -95,6 +96,7 @@ def insert_label(label):
 
                 current_date = datetime.now()
                 cur.execute(sql_labels_comprehensive, (
+                    label['label_id'],
                     label['name'],
                     label['styles/specialties'],
                     label['status'],
@@ -116,12 +118,7 @@ def insert_label(label):
                 ))
                 print("Label inserted successfully")
                 # Get the id of the just-inserted label (label_id)
-                cur.execute("SELECT currval(pg_get_serial_sequence('hydra.labels_comprehensive','label_id'))")
-                label_id_row = cur.fetchone()
-                if label_id_row:
-                    label['label_id'] = label_id_row[0]
-                else:
-                    raise Exception("Could not retrieve label_id after insert.")
+
                 print("Label id: " + str(label['label_id']))
                 for band in label['current_bands']:
                     cur.execute(sql_label_bands, (
@@ -155,6 +152,10 @@ def insert_label(label):
                         release['release_url'],
                         release['band_id'],
                         release['release_type'],
+                        release['release_year'],
+                        release['catalog'],
+                        release['format'],
+                        release['description'],
                     ))
                 print("Releases inserted successfully")
                 for link in label['links']:
@@ -164,11 +165,12 @@ def insert_label(label):
                         link['link_url'],
                     ))
                 print("Links inserted successfully")
-                for note in label['notes']:
+                # Handle notes - it's a dictionary, not a list
+                if label['notes'] and isinstance(label['notes'], dict):
                     cur.execute(sql_label_notes, (
                         label['label_id'],
-                        note['note_title'],
-                        note['note_text'],
+                        label['notes']['title'],
+                        label['notes']['text'],
                     ))
                 print("Notes inserted successfully")
                 conn.commit()

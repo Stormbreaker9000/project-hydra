@@ -3,7 +3,8 @@
 
 CREATE TABLE hydra.labels_comprehensive (
     -- Primary identifier
-    label_id SERIAL PRIMARY KEY,
+
+    label_id BIGINT PRIMARY KEY,
     
     -- Basic label information (from dt/dd elements)
     name VARCHAR(255) NOT NULL,
@@ -30,12 +31,13 @@ CREATE TABLE hydra.labels_comprehensive (
     -- Metadata
     scraped_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+)
+
 
 -- Create unified table for all band-label relationships
 CREATE TABLE hydra.label_bands (
     id SERIAL PRIMARY KEY,
-    label_id INTEGER NOT NULL,
+    label_id BIGINT NOT NULL,
     band_id VARCHAR(50) NOT NULL,
     band_name VARCHAR(255) NOT NULL,
     band_url TEXT NOT NULL,
@@ -54,7 +56,7 @@ CREATE TABLE hydra.label_bands (
 
 CREATE TABLE hydra.label_releases (
     id SERIAL PRIMARY KEY,
-    label_id INTEGER NOT NULL,
+    label_id BIGINT NOT NULL,
     release_id VARCHAR(50) NOT NULL,
     release_name VARCHAR(255) NOT NULL,
     release_url TEXT NOT NULL,
@@ -72,7 +74,7 @@ CREATE TABLE hydra.label_releases (
 
 CREATE TABLE hydra.label_links (
     id SERIAL PRIMARY KEY,
-    label_id INTEGER NOT NULL,
+    label_id BIGINT NOT NULL,
     link_name VARCHAR(255) NOT NULL,
     link_url TEXT NOT NULL,
     FOREIGN KEY (label_id) REFERENCES hydra.labels_comprehensive(label_id) ON DELETE CASCADE,
@@ -81,7 +83,7 @@ CREATE TABLE hydra.label_links (
 
 CREATE TABLE hydra.label_notes (
     id SERIAL PRIMARY KEY,
-    label_id INTEGER NOT NULL,
+    label_id BIGINT NOT NULL,
     note_title VARCHAR(255) NOT NULL,
     note_text TEXT NOT NULL,
     FOREIGN KEY (label_id) REFERENCES hydra.labels_comprehensive(label_id) ON DELETE CASCADE,
