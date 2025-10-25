@@ -52,8 +52,6 @@ def scrape_label(driver: webdriver.Chrome, url: str):
         print("Contact info not found")
         return {}
 
-    url = url_a.get_attribute("href")
-
     label["email"] = email
     label["url"] = url
 
@@ -220,7 +218,10 @@ def scrape_label(driver: webdriver.Chrome, url: str):
                     "format": format,
                     "description": description
                 })
-                counter += 1
+
+            if counter > 1:
+                break
+
             next_page = releases_tab.find_element(By.CLASS_NAME, "next")
             if next_page.is_displayed() and "paginate_button_disabled" not in next_page.get_attribute("class"):
                 next_page.click()
@@ -230,8 +231,7 @@ def scrape_label(driver: webdriver.Chrome, url: str):
             else:
                 break
 
-            if counter > 1:
-                break
+
     except Exception as e:
         print(f"Error: {e}")
         print("Releases not found")

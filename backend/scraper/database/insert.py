@@ -17,11 +17,6 @@ def insert_label(label):
     founded_date = founded_date.strftime("%Y-%m-%d")
     label['founding_date'] = founded_date
 
-    print(label['current_bands'][0])
-    print(label['historical_bands'][0])
-    print(label['releases'][0])
-    print(label['links'][0])
-    print(label['notes']['title'])
     sql_labels_comprehensive = """
         INSERT INTO hydra.labels_comprehensive (
             label_id,
