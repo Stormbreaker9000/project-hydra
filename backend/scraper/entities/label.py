@@ -231,6 +231,8 @@ def scrape_label(driver: webdriver.Chrome, url: str):
             else:
                 break
 
+            counter += 1
+
 
     except Exception as e:
         print(f"Error: {e}")
