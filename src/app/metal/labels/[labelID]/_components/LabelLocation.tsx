@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 
 export default function LabelLocation({ label }: { label: Label }) {
     return (
-        <Card>
+        <Card sx={{ width: '100%' }}>
             <CardHeader title="Location" />
             <CardContent>
                 <Typography variant="body1">{`Country: ${label.country}`}</Typography>

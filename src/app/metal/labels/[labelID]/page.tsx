@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography"
 import { Label, LabelBand, LabelRelease, LabelLink, LabelNote } from "../_data/types";
 import { neon } from "@neondatabase/serverless";
 import { Stack } from "@mui/material";
+import LabelTitle from "./_components/LabelTitle";
 import LabelInfo from "./_components/LabelInfo";
 import LabelLocation from "./_components/LabelLocation";
 import LabelCurrentBands from "./_components/LabelCurrentBands";
@@ -77,7 +78,19 @@ export default async function LabelPage({ params }: { params: Promise<{ labelID:
             marginBottom: 12,
         }}>
             <Box sx={{ mb: 4 }}>
-                <Stack spacing={1}>
+                <Stack
+                    spacing={1}
+                    direction="column"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        maxWidth: '1200px',
+                        padding: 2,
+                    }}
+                >
+                    <LabelTitle label={data} />
                     <LabelInfo label={data} />
                     <LabelLocation label={data} />
                     <LabelCurrentBands bands={currentBands} />
