@@ -1,11 +1,11 @@
-import { Box, Card, CardContent, CardHeader, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { Label } from "./_data/types";
 import LabelCard from "./_components/LabelCard";
 import { neon } from '@neondatabase/serverless';
 
 async function getData(): Promise<Label[]> {
     const sql = neon(process.env.DATABASE_URL || '');
-    const response = await sql`SELECT * FROM labels LIMIT 10`;
+    const response = await sql`SELECT * FROM hydra.labels_comprehensive LIMIT 10`;
     return response as Label[];
 }
 
