@@ -9,5 +9,10 @@
   "jsxBracketSameLine": false,
   "arrowParens": "always",
   "printWidth": 100,
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "importOrder": ["^react", "<THIRD_PARTY_MODULES>", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderCaseInsensitive": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
