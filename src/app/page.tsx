@@ -12,6 +12,7 @@ export default function Home() {
         <Typography variant="h2">Just some stuff for me to play with</Typography>
         <Button variant="contained" color="primary">Get Started</Button>
       </Box>
+      <Typography variant="h1" className="flex flex-col items-center justify-center text-8xl font-bold">Tailwind CSS Test!</Typography>
     </BackgroundGradient>
   );
 }

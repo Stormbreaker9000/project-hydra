@@ -1,3 +1,5 @@
+import "@/app/globals.css";
+
 import { theme } from "@/theme";
 import { CssBaseline, Divider, InitColorSchemeScript, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
@@ -20,7 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body >
         <InitColorSchemeScript attribute="class" />
-        <AppRouterCacheProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <HydraAppBar />
