@@ -2,6 +2,7 @@ import { Box, Button, Container, Divider, Typography } from "@mui/material";
 import HydraLogoWords from "../../public/orange-hydra-words-trans.png";
 import Image from "next/image";
 import BackgroundGradient from "@/components/BackgroundGradient";
+import ReactRiberTest from "@/components/ReactRiberTest";
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
       >
         Tailwind CSS Test!
       </Typography>
+      <ReactRiberTest />
     </BackgroundGradient>
   );
 }
