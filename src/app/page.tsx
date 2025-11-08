@@ -3,6 +3,7 @@ import HydraLogoWords from "../../public/orange-hydra-words-trans.png";
 import Image from "next/image";
 import BackgroundGradient from "@/components/BackgroundGradient";
 import ReactRiberTest from "@/components/ReactRiberTest";
+import MapBoxTest from "@/components/MapBoxTest";
 
 export default function Home() {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
         Tailwind CSS Test!
       </Typography>
       <ReactRiberTest />
+      <MapBoxTest />
     </BackgroundGradient>
   );
 }
