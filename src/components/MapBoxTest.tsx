@@ -9,7 +9,7 @@ import Map, {
   ViewState,
   ViewStateChangeEvent,
 } from "react-map-gl/mapbox";
-import "mapbox-gl/dist/mapbox-gl.css";
+
 import { Box, Typography, Paper, Chip } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
@@ -70,6 +70,7 @@ export default function MapBoxTest({ mapboxToken }: MapBoxTestProps) {
           mapboxAccessToken={token}
           style={{ width: "100%", height: "100%" }}
           mapStyle="mapbox://styles/mapbox/streets-v12"
+          reuseMaps={true} // This is to prevent the map from being recreated when the component is re-rendered
         >
           {/* Markers */}
           {markers.map((marker) => (

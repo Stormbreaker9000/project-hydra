@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 import { theme } from "@/theme";
 import { CssBaseline, Divider, InitColorSchemeScript, ThemeProvider } from "@mui/material";
@@ -6,7 +7,6 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import type { Metadata } from "next";
 import HydraAppBar from "@/components/HydraAppBar";
 import Footer from "@/components/Footer";
-
 
 export const metadata: Metadata = {
   title: "Project Hydra",
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body >
+      <body>
         <InitColorSchemeScript attribute="class" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
