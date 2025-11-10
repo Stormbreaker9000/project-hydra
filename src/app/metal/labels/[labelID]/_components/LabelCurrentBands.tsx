@@ -1,17 +1,42 @@
-import { Card, CardContent, CardHeader, Stack, Typography } from "@mui/material";
+"use client";
+
+import { Box } from "@mui/material";
 import { LabelBand } from "../../_data/types";
+import { DataGrid, GridColDef, gridClasses } from "@mui/x-data-grid";
+
+const columns: GridColDef[] = [
+  { field: "band_name", headerName: "Band Name", flex: 1.5, minWidth: 200 },
+  { field: "genre", headerName: "Genre", flex: 1, minWidth: 100 },
+  { field: "country", headerName: "Country", flex: 1, minWidth: 100 },
+];
 
 export default function LabelCurrentBands({ bands }: { bands: LabelBand[] }) {
-    return (
-        <Card>
-            <CardHeader title="Current Bands" />
-            <CardContent>
-                <Stack spacing={1}>
-                    {bands.map((band) => (
-                        <Typography key={band.id} variant="body1">{`${band.band_name} - ${band.genre} - ${band.country}`}</Typography>
-                    ))}
-                </Stack>
-            </CardContent>
-        </Card>
-    )
+  return (
+    <Box sx={{ width: "100%" }}>
+      <DataGrid
+        rows={bands.map((band) => ({ ...band }))}
+        columns={columns}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 10 } },
+        }}
+        pageSizeOptions={[10, 20, 50]}
+        disableColumnResize
+        density="compact"
+        slotProps={{
+          loadingOverlay: {
+            variant: "circular-progress",
+            noRowsVariant: "circular-progress",
+          },
+        }}
+        sx={{
+          [`& .${gridClasses.columnHeader}, & .${gridClasses.cell}`]: {
+            outline: "transparent",
+          },
+          [`& .${gridClasses.columnHeader}:focus-within, & .${gridClasses.cell}:focus-within`]: {
+            outline: "none",
+          },
+        }}
+      />
+    </Box>
+  );
 }

@@ -1,7 +1,5 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import { Label, LabelBand, LabelRelease, LabelLink, LabelNote } from "../_data/types";
 import { neon } from "@neondatabase/serverless";
 import { Stack } from "@mui/material";
@@ -15,6 +13,7 @@ import LabelLinks from "./_components/LabelLinks";
 import LabelNotes from "./_components/LabelNotes";
 import LabelAudit from "./_components/LabelAudit";
 import LabelLogo from "./_components/LabelLogo";
+import LabelTableTabs from "./_components/LabelTableTabs";
 
 async function getLabel(labelID: number): Promise<Label | null> {
   const sql = neon(process.env.DATABASE_URL || "");
@@ -70,12 +69,27 @@ export default async function LabelPage({ params }: { params: Promise<{ labelID:
   const links = await getLabelLinks(labelID);
   const notes = await getLabelNotes(labelID);
 
+  const tabArray = [
+    {
+      label: "Current Bands",
+      component: <LabelCurrentBands bands={currentBands} />,
+    },
+    {
+      label: "Historic Bands",
+      component: <LabelHistoricBands bands={historicBands} />,
+    },
+    {
+      label: "Releases",
+      component: <LabelReleases releases={releases} />,
+    },
+  ];
+
   if (!data) {
     return <div>Label not found</div>;
   }
 
   return (
-    <Container
+    <Box
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -83,8 +97,6 @@ export default async function LabelPage({ params }: { params: Promise<{ labelID:
         justifyContent: "center",
         height: "100%",
         width: "100%",
-        marginTop: 12,
-        marginBottom: 12,
       }}
     >
       <Box sx={{ mb: 4 }}>
@@ -96,7 +108,6 @@ export default async function LabelPage({ params }: { params: Promise<{ labelID:
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            maxWidth: "1200px",
             padding: 2,
           }}
         >
@@ -104,14 +115,12 @@ export default async function LabelPage({ params }: { params: Promise<{ labelID:
           <LabelLogo logo_url={data.logo_url} />
           <LabelInfo label={data} />
           <LabelLocation label={data} />
-          <LabelCurrentBands bands={currentBands} />
-          <LabelHistoricBands bands={historicBands} />
-          <LabelReleases releases={releases} />
+          <LabelTableTabs tabs={tabArray} />
           <LabelLinks links={links} />
           <LabelNotes notes={notes} />
           <LabelAudit label={data} />
         </Stack>
       </Box>
-    </Container>
+    </Box>
   );
 }
