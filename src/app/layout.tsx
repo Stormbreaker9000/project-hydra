@@ -36,7 +36,7 @@ export default function RootLayout({
             <BackgroundGradient />
             <Container
               maxWidth="xl"
-              sx={{ width: "100%", mt: 24, position: "relative", zIndex: 1 }}
+              sx={{ width: "100%", mt: 24, minHeight: "100vh", position: "relative", zIndex: 1 }}
             >
               {children}
             </Container>
