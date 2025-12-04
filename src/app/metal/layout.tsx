@@ -1,9 +1,5 @@
-import BackgroundGradient from "@/components/BackgroundGradient";
+import { Box } from "@mui/material";
 
 export default function MetalLayout({ children }: { children: React.ReactNode }) {
-    return (
-        <BackgroundGradient>
-            {children}
-        </BackgroundGradient>
-    );
+  return <Box>{children}</Box>;
 }

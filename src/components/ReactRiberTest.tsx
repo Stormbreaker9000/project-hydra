@@ -47,6 +47,7 @@ export default function ReactRiberTest() {
           border: "2px solid",
           borderColor: "divider",
           borderRadius: 2,
+          backgroundColor: "background.paper",
           overflow: "hidden",
         }}
       >

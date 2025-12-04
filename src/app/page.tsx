@@ -7,7 +7,7 @@ import MapBoxTest from "@/components/MapBoxTest";
 
 export default function Home() {
   return (
-    <BackgroundGradient>
+    <Box>
       <Box
         sx={{
           display: "flex",
@@ -33,6 +33,6 @@ export default function Home() {
       </Typography>
       <ReactRiberTest />
       <MapBoxTest />
-    </BackgroundGradient>
+    </Box>
   );
 }

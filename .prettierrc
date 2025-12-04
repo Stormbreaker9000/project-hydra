@@ -10,9 +10,37 @@
   "arrowParens": "always",
   "printWidth": 100,
   "endOfLine": "auto",
-  "importOrder": ["^react", "<THIRD_PARTY_MODULES>", "^[./]"],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "importOrder": [
+    "^@/app/globals.css$",
+    "^[./].*\\.css$",
+    "^react$",
+    "^react-dom$",
+    "^next",
+    "^@mui/material-nextjs",
+    "^@mui/material$",
+    "^@mui/material/(.*)$",
+    "^@mui/icons-material",
+    "^@mui/x-(.*)$",
+    "^@emotion/(.*)$",
+    "^@react-three/(.*)$",
+    "^three$",
+    "^mapbox-gl$",
+    "^react-map-gl$",
+    "^@neondatabase/(.*)$",
+    "^dayjs$",
+    "<THIRD_PARTY_MODULES>",
+    "^@/theme$",
+    "^@/components/(.*)$",
+    "^@/(.*)$",
+    "^\\.\\./(.*)$",
+    "^\\./(?!.*\\.(css|scss))(.*)$",
+    "^\\./.*\\.(css|scss)$"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "importOrderCaseInsensitive": true,
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "importOrderCaseInsensitive": true
 }
